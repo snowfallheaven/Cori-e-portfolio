@@ -1,36 +1,57 @@
-//
-//template_cjbh0v4
-//BY49gfgBv2-n9-DfZ public ID
-//service_pykyn99
-//* <script type="text/javascript"
-//         src="https://cdn.jsdelivr.net/npm/@emailjs/browser@5/dist/email.min.js">
-// </script>
-// <script type="text/javascript">
-//    (function(){
-//       emailjs.init({
-//         publicKey: "BY49gfgBv2-n9-DfZ",
-//       });
-//    })();
-// </script> */
+let isModalOpen = false;
+let contrastToggle = false;
+const scaleFactor = 1 / 20;
+
+function moveBackground(event) {
+  const shapes = document.querySelectorAll(".shape")
+  const x = event.clientX * scaleFactor;
+  const y = event.clientY * scaleFactor;
+  
+  for (let i = 0; i < shapes.length; ++i) {
+    const isOdd = i % 2 !== 0;
+    const boolInt = isOdd ? -1 : 1;
+    shapes[i].style.transform = `translate(${x * boolInt}px, ${y * boolInt}px)`
+  }
+}
+
+function toggleContrast() {
+  contrastToggle = !contrastToggle;
+  if (contrastToggle) {
+    document.body.classList += " dark-theme"
+  }
+  else {
+    document.body.classList.remove("dark-theme")
+  }
+}
 
 function contact(event) {
   event.preventDefault();
-//   emailjs
-//     .sendForm(
-//       'service_pykyn99',
-//       'template_cjbh0v4',
-//       event.target,
-//       'BY49gfgBv2-n9-DfZ'
-//     ).then(() => {
-//       console.log('this worked1')
-//     })
-// }
-const loading = document.querySelector('modal__overlay--loading')
-const success = document.querySelector('modal__overlay--success')
-loading.classList += " modal__overlay--visible"
-setTimeout(() => {
-  loading.classList.remove += ("modal__overlay--visible")
-  success.classList += " modal__overlay--visible"
-  console.log('it worked1')
-}, 1000)
+  const loading = document.querySelector('.modal__overlay--loading')
+  const success = document.querySelector('.modal__overlay--success')
+  loading.classList += " modal__overlay--visible"
+  emailjs
+    .sendForm(
+      'service_pykyn99',
+      'template_cjbh0v4',
+      event.target,
+      'BY49gfgBv2-n9-DfZ'
+    ).then(() => {
+      loading.classList.remove += ("modal__overlay--visible")
+      success.classList += " modal__overlay--visible"
+    }).catch(() => {
+      loading.classList.remove += ("modal__overlay--visible")
+      alert(
+        "The email service is temporarily unavailable. Please contact me directly at snowfallheaven@yahoo.com."
+      );
+    });
+}
+
+
+function toggleModal() {
+  if (isModalOpen) {
+    isModalOpen = false;
+    return document.body.classList.remove("modal--open")
+  }
+  isModalOpen = true;
+  document.body.classList += " modal--open";
 }
